@@ -722,6 +722,7 @@
                 <div class="user-info" id="user-info" style="display:none;">
                     <span id="username-display"></span>
                     <span class="role-badge" id="role-badge"></span>
+                    <a href="#" onclick="showQuickPostModal()" id="quick-post-btn" style="display:none;color:#0066cc;font-weight:bold;">鍙戝竷甯栧瓙</a>
                     <a href="#" onclick="navigateTo('userCenter')">涓汉涓績</a>
                     <button class="btn btn-small" onclick="logout()">閫€鍑?/button>
                 </div>
@@ -936,11 +937,15 @@
                 <input type="password" id="register-password" placeholder="璇疯緭鍏ュ瘑鐮?>
             </div>
             <div class="form-group">
-                <label>瑙掕壊锛堥粯璁よ鑰咃級</label>
+                <label>瑙掕壊</label>
                 <select id="register-role">
                     <option value="reader">璇昏€?/option>
+                    <option value="host">鍚т富</option>
                 </select>
             </div>
+            <p style="margin-top:10px;font-size:12px;color:#999;">
+                璇存槑锛氳鑰呭彲娴忚鍜岃瘎璁猴紝鍚т富鍙彂甯冨拰绠＄悊甯栧瓙
+            </p>
             <div class="form-actions">
                 <button class="btn" onclick="hideModal('register-modal')">鍙栨秷</button>
                 <button class="btn btn-primary" onclick="register()">娉ㄥ唽</button>
@@ -1411,6 +1416,14 @@
                 roleBadge.textContent = getRoleName(currentUser.role);
                 roleBadge.className = 'role-badge role-' + (currentUser.role === 'admin' ? 'admin' : currentUser.role === 'host' ? 'host' : 'reader');
 
+                // 绠＄悊鍛樺拰鍚т富鏄剧ず鍙戝竷甯栧瓙鎸夐挳
+                const quickPostBtn = document.getElementById('quick-post-btn');
+                if (currentUser.role === 'admin' || currentUser.role === 'host') {
+                    quickPostBtn.style.display = 'inline';
+                } else {
+                    quickPostBtn.style.display = 'none';
+                }
+
                 // 绠＄悊鍛樻樉绀虹鐞嗗悗鍙板叆鍙?                if (currentUser.role === 'admin') {
                     const adminLink = document.createElement('a');
                     adminLink.href = '#';
@@ -1466,6 +1479,38 @@
             renderForums();
         }
 
+        // 蹇€熷彂甯冨笘瀛?        function showQuickPostModal() {
+            const forumSelect = '<select id="quick-forum-select" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:3px;margin-bottom:10px;">';
+            let options = '';
+            forums.forEach(f => {
+                options += '<option value="' + f.id + '">' + f.name + '</option>';
+            });
+            const selectHtml = forumSelect + options + '</select>';
+            
+            // 鏄剧ず鎻愮ず璁╃敤鎴峰厛閫夋嫨鏉垮潡
+            if (forums.length === 0) {
+                showToast('璇峰厛鍒扮鐞嗗悗鍙板垱寤烘澘鍧?, true);
+                return;
+            }
+            
+            showCreatePostModal(forums[0].id);
+            // 娣诲姞鏉垮潡閫夋嫨鍒板彂甯冨脊绐?            const typeGroup = document.getElementById('post-type').parentElement;
+            let forumSelector = document.getElementById('quick-forum-selector');
+            if (!forumSelector) {
+                forumSelector = document.createElement('div');
+                forumSelector.id = 'quick-forum-selector';
+                forumSelector.innerHTML = '<label style="display:block;margin-bottom:5px;font-weight:500;">閫夋嫨鏉垮潡</label>';
+                forumSelector.innerHTML += selectHtml;
+                typeGroup.parentElement.insertBefore(forumSelector, typeGroup);
+            }
+            
+            // 鏇存柊鏉垮潡閫夋嫨
+            const select = document.getElementById('quick-forum-select');
+            if (select) {
+                select.value = forums[0].id;
+            }
+        }
+
         // 鍒涘缓甯栧瓙
         function showCreatePostModal(forumId) {
             document.getElementById('post-title').value = '';
@@ -1487,7 +1532,8 @@
             const type = document.getElementById('post-type').value;
             const videoUrl = document.getElementById('video-url').value;
             const content = document.getElementById('post-content').value;
-            const forumId = parseInt(document.getElementById('create-post-modal').dataset.forumId);
+            const forumIdSelect = document.getElementById('quick-forum-select');
+            const forumId = forumIdSelect ? parseInt(forumIdSelect.value) : parseInt(document.getElementById('create-post-modal').dataset.forumId);
 
             if (!title || !content) {
                 showToast('璇峰～鍐欐爣棰樺拰鍐呭', true);
