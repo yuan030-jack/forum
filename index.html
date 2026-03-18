@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鏀荤暐鍒嗕韩璁哄潧</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "瀹嬩綋", Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 瀵艰埅鏍?*/
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #dddddd;
+            padding: 15px 0;
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #333;
+        }
+
+        .nav-links a.active {
+            color: #0066cc;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .role-badge {
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .role-admin {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .role-host {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .role-reader {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        /* 鎸夐挳 */
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #dddddd;
+            background-color: #ffffff;
+            color: #333;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 3px;
+        }
+
+        .btn:hover {
+            border-color: #0066cc;
+            color: #0066cc;
+        }
+
+        .btn-primary {
+            background-color: #0066cc;
+            color: white;
+            border-color: #0066cc;
+        }
+
+        .btn-primary:hover {
+            background-color: #0052a3;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-small {
+            padding: 4px 10px;
+            font-size: 12px;
+        }
+
+        /* 妯℃€佹 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dddddd;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* 椤甸潰鍖哄煙 */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* 棣栭〉 */
+        .hero {
+            background-color: #fff;
+            padding: 40px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+        }
+
+        .hero h1 {
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #666;
+        }
+
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        /* 鏉垮潡鍒楄〃 */
+        .forum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .forum-card {
+            border: 1px solid #dddddd;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .forum-card:hover {
+            border-color: #0066cc;
+        }
+
+        .forum-card h3 {
+            margin-bottom: 5px;
+        }
+
+        .forum-card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .forum-stats {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* 甯栧瓙鍒楄〃 */
+        .post-list {
+            list-style: none;
+        }
+
+        .post-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eeeeee;
+            gap: 15px;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-item:hover {
+            background-color: #fafafa;
+        }
+
+        .post-type-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .post-type-icon.video {
+            background-color: #ffe6e6;
+            color: #e74c3c;
+        }
+
+        .post-type-icon.text {
+            background-color: #e6f3ff;
+            color: #0066cc;
+        }
+
+        .post-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .post-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-title .tag {
+            padding: 2px 6px;
+            font-size: 10px;
+            border-radius: 2px;
+        }
+
+        .tag-video {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .tag-text {
+            background-color: #0066cc;
+            color: white;
+        }
+
+        .post-meta {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .post-stats {
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .post-stats .number {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .post-stats .label {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* 闈㈠寘灞?*/
+        .breadcrumb {
+            padding: 15px 0;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .breadcrumb a {
+            color: #999;
+        }
+
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+
+        /* 甯栧瓙璇︽儏 */
+        .post-detail {
+            background-color: #fff;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+        }
+
+        .post-detail-header {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .post-detail-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .post-detail-meta {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .post-detail-body {
+            line-height: 1.8;
+        }
+
+        .post-detail-body p {
+            margin-bottom: 15px;
+        }
+
+        .post-detail-body a {
+            color: #0066cc;
+        }
+
+        .video-container {
+            margin: 20px 0;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            max-width: 720px;
+            height: 405px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* 璇勮鍖哄煙 */
+        .comments-section {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+        }
+
+        .comment-form {
+            margin-bottom: 20px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dddddd;
+            border-radius: 3px;
+            min-height: 80px;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        .comment-list {
+            list-style: none;
+        }
+
+        .comment-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            font-weight: 500;
+        }
+
+        .comment-time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .comment-content {
+            padding-left: 50px;
+        }
+
+        .comment-actions {
+            margin-top: 10px;
+            padding-left: 50px;
+        }
+
+        .comment-actions a {
+            font-size: 12px;
+            margin-right: 15px;
+        }
+
+        /* 绠＄悊闈㈡澘 */
+        .admin-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid #eeeeee;
+            margin-bottom: 20px;
+        }
+
+        .admin-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .admin-tab:hover {
+            color: #0066cc;
+        }
+
+        .admin-tab.active {
+            border-bottom-color: #0066cc;
+            color: #0066cc;
+        }
+
+        .admin-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .admin-table th {
+            background-color: #fafafa;
+            font-weight: 500;
+        }
+
+        .admin-table tr:hover {
+            background-color: #fafafa;
+        }
+
+        /* 鐢ㄦ埛涓績 */
+        .user-center {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        .user-sidebar {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background-color: #ddd;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .user-nickname {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .user-menu {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .user-menu li {
+            padding: 10px;
+            border-bottom: 1px solid #eeeeee;
+            cursor: pointer;
+        }
+
+        .user-menu li:hover,
+        .user-menu li.active {
+            background-color: #f5f5f5;
+            color: #0066cc;
+        }
+
+        .user-main {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+        }
+
+        /* 閫氱煡娑堟伅 */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: #fff;
+            border-left: 4px solid #2ecc71;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 2000;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .toast.error {
+            border-left-color: #e74c3c;
+        }
+
+        /* 绌虹姸鎬?*/
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+        }
+
+        /* 鍒嗛〉 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 20px 0;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #dddddd;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .pagination button:hover {
+            border-color: #0066cc;
+            color: #0066cc;
+        }
+
+        .pagination button.active {
+            background-color: #0066cc;
+            color: white;
+            border-color: #0066cc;
+        }
+
+        /* 鍝嶅簲寮?*/
+        @media (max-width: 768px) {
+            .user-center {
+                grid-template-columns: 1fr;
+            }
+
+            .forum-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .post-item {
+                flex-wrap: wrap;
+            }
+
+            .post-stats {
+                display: none;
+            }
+        }
+
+        /* 搴曢儴 */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 14px;
+            border-top: 1px solid #dddddd;
+            margin-top: 40px;
+        }
+
+        /* 瑙嗛棰勮 */
+        .video-preview {
+            background-color: #ffe6e6;
+            border: 1px solid #ffcccc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .video-preview-icon {
+            color: #e74c3c;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 瀵艰埅鏍?-->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <div class="logo" onclick="navigateTo('home')" style="cursor:pointer;">馃幃 鏀荤暐鍒嗕韩璁哄潧</div>
+            <div class="nav-links">
+                <a href="#" onclick="navigateTo('home')" class="active" id="nav-home">棣栭〉</a>
+                <a href="#" onclick="navigateTo('forums')" id="nav-forums">鏉垮潡</a>
+                <div class="user-info" id="user-info" style="display:none;">
+                    <span id="username-display"></span>
+                    <span class="role-badge" id="role-badge"></span>
+                    <a href="#" onclick="navigateTo('userCenter')">涓汉涓績</a>
+                    <button class="btn btn-small" onclick="logout()">閫€鍑?/button>
+                </div>
+                <div id="auth-buttons">
+                    <button class="btn btn-small" onclick="showModal('login-modal')">鐧诲綍</button>
+                    <button class="btn btn-small" onclick="showModal('register-modal')">娉ㄥ唽</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 涓诲唴瀹?-->
+    <div class="container" id="main-content">
+        <!-- 棣栭〉 -->
+        <div class="page active" id="page-home">
+            <div class="hero">
+                <h1>娆㈣繋鏉ュ埌鏀荤暐鍒嗕韩璁哄潧</h1>
+                <p>鍒嗕韩娓告垙鏀荤暐銆佹妧宸у績寰楋紝涓庡織鍚岄亾鍚堢殑鏈嬪弸浜ゆ祦瀛︿範</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">鐑棬鏉垮潡</h2>
+                <div class="forum-grid" id="home-forums"></div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">鏈€鏂板笘瀛?/h2>
+                <ul class="post-list" id="home-posts"></ul>
+            </div>
+        </div>
+
+        <!-- 鏉垮潡鍒楄〃椤?-->
+        <div class="page" id="page-forums">
+            <div class="breadcrumb">
+                <a href="#" onclick="navigateTo('home')">棣栭〉</a><span>></span><span>鍏ㄩ儴鏉垮潡</span>
+            </div>
+            <div class="section">
+                <h2 class="section-title">鍏ㄩ儴鏉垮潡</h2>
+                <button class="btn btn-primary" onclick="showModal('create-forum-modal')" id="create-forum-btn" style="margin-bottom:15px;display:none;">鍒涘缓鏉垮潡</button>
+                <div class="forum-grid" id="all-forums"></div>
+            </div>
+        </div>
+
+        <!-- 甯栧瓙鍒楄〃椤?-->
+        <div class="page" id="page-post-list">
+            <div class="breadcrumb">
+                <a href="#" onclick="navigateTo('home')">棣栭〉</a><span>></span>
+                <a href="#" onclick="navigateTo('forums')">鏉垮潡</a><span>></span>
+                <span id="forum-breadcrumb"></span>
+            </div>
+            <div class="section">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+                    <h2 class="section-title" style="border:none;margin:0;padding:0;" id="forum-title"></h2>
+                    <button class="btn btn-primary" onclick="showModal('create-post-modal')" id="create-post-btn" style="display:none;">鍙戝竷甯栧瓙</button>
+                </div>
+                <ul class="post-list" id="forum-posts"></ul>
+            </div>
+        </div>
+
+        <!-- 甯栧瓙璇︽儏椤?-->
+        <div class="page" id="page-post-detail">
+            <div class="breadcrumb" id="post-breadcrumb">
+                <a href="#" onclick="navigateTo('home')">棣栭〉</a><span>></span>
+                <a href="#" onclick="navigateTo('forums')">鏉垮潡</a><span>></span>
+                <a href="#" id="detail-forum-link"></a><span>></span>
+                <span>甯栧瓙璇︽儏</span>
+            </div>
+<div class="post-detail">
+                <div class="post-detail-header">
+                    <h1 class="post-detail-title" id="detail-title"></h1>
+                    <div class="post-detail-meta">
+                        <span id="detail-author"></span> 路 <span id="detail-time"></span> 路 <span id="detail-views"></span>闃呰
+                    </div>
+                </div>
+                <div class="post-detail-body" id="detail-content"></div>
+            </div>
+
+            <div class="comments-section">
+                <h3 class="section-title">璇勮 (<span id="comment-count">0</span>)</h3>
+                <div class="comment-form" id="comment-form" style="display:none;">
+                    <textarea id="comment-input" placeholder="鍐欎笅浣犵殑璇勮..."></textarea>
+                    <button class="btn btn-primary" onclick="submitComment()">鍙戣〃璇勮</button>
+                </div>
+                <ul class="comment-list" id="comment-list"></ul>
+            </div>
+        </div>
+
+        <!-- 鐢ㄦ埛涓績 -->
+        <div class="page" id="page-user-center">
+            <div class="breadcrumb">
+                <a href="#" onclick="navigateTo('home')">棣栭〉</a><span>></span><span>涓汉涓績</span>
+            </div>
+            <div class="user-center">
+                <div class="user-sidebar">
+                    <div class="user-avatar">馃懁</div>
+                    <div class="user-nickname" id="uc-nickname"></div>
+                    <div style="text-align:center;margin-bottom:10px;">
+                        <span class="role-badge" id="uc-role"></span>
+                    </div>
+                    <ul class="user-menu">
+                        <li class="active" onclick="showUserTab('posts')">鎴戠殑甯栧瓙</li>
+                        <li onclick="showUserTab('comments')">鎴戠殑璇勮</li>
+                        <li onclick="showUserTab('settings')">璐﹀彿璁剧疆</li>
+                    </ul>
+                </div>
+                <div class="user-main">
+                    <div id="uc-posts">
+                        <h3 class="section-title">鎴戠殑甯栧瓙</h3>
+                        <ul class="post-list" id="my-posts"></ul>
+                    </div>
+                    <div id="uc-comments" style="display:none;">
+                        <h3 class="section-title">鎴戠殑璇勮</h3>
+                        <ul class="comment-list" id="my-comments"></ul>
+                    </div>
+                    <div id="uc-settings" style="display:none;">
+                        <h3 class="section-title">璐﹀彿璁剧疆</h3>
+                        <button class="btn btn-danger" onclick="logout()">閫€鍑虹櫥褰?/button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 绠＄悊鍚庡彴 -->
+        <div class="page" id="page-admin">
+            <div class="breadcrumb">
+                <a href="#" onclick="navigateTo('home')">棣栭〉</a><span>></span><span>绠＄悊鍚庡彴</span>
+            </div>
+            <div class="admin-tabs">
+                <div class="admin-tab active" onclick="showAdminTab('users')">鐢ㄦ埛绠＄悊</div>
+                <div class="admin-tab" onclick="showAdminTab('forums')">鏉垮潡绠＄悊</div>
+                <div class="admin-tab" onclick="showAdminTab('posts')">甯栧瓙绠＄悊</div>
+            </div>
+            <div class="admin-content">
+                <div id="admin-users">
+                    <h3 class="section-title">鐢ㄦ埛鍒楄〃</h3>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>鐢ㄦ埛鍚?/th>
+                                <th>瑙掕壊</th>
+                                <th>娉ㄥ唽鏃堕棿</th>
+                                <th>鎿嶄綔</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-users-tbody"></tbody>
+                    </table>
+                </div>
+                <div id="admin-forums" style="display:none;">
+                    <h3 class="section-title">鏉垮潡绠＄悊</h3>
+                    <button class="btn btn-primary" onclick="showModal('create-forum-modal')">鍒涘缓鏉垮潡</button>
+                    <table class="admin-table" style="margin-top:15px;">
+                        <thead>
+                            <tr>
+                                <th>鏉垮潡鍚嶇О</th>
+                                <th>鎻忚堪</th>
+                                <th>鍚т富</th>
+                                <th>甯栧瓙鏁?/th>
+                                <th>鎿嶄綔</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-forums-tbody"></tbody>
+                    </table>
+                </div>
+                <div id="admin-posts" style="display:none;">
+                    <h3 class="section-title">甯栧瓙绠＄悊</h3>
+                    <ul class="post-list" id="admin-posts-list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 搴曢儴 -->
+    <div class="footer">
+        <p>鏀荤暐鍒嗕韩璁哄潧 漏 2026 | 绠€鏈撮鏍硷紝涓撴敞鍐呭</p>
+    </div>
+
+    <!-- 鐧诲綍妯℃€佹 -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">鐧诲綍</h2>
+            <div class="form-group">
+                <label>鐢ㄦ埛鍚?/label>
+                <input type="text" id="login-username" placeholder="璇疯緭鍏ョ敤鎴峰悕">
+            </div>
+            <div class="form-group">
+                <label>瀵嗙爜</label>
+                <input type="password" id="login-password" placeholder="璇疯緭鍏ュ瘑鐮?>
+            </div>
+            <div class="form-actions">
+                <button class="btn" onclick="hideModal('login-modal')">鍙栨秷</button>
+                <button class="btn btn-primary" onclick="login()">鐧诲綍</button>
+            </div>
+            <p style="margin-top:15px;font-size:12px;color:#999;">
+                婕旂ず璐﹀彿锛?br>
+                绠＄悊鍛橈細admin / admin123<br>
+                鍚т富锛歨ost1 / host123<br>
+                璇昏€咃細reader1 / reader123
+            </p>
+        </div>
+    </div>
+
+    <!-- 娉ㄥ唽妯℃€佹 -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">娉ㄥ唽</h2>
+            <div class="form-group">
+                <label>鐢ㄦ埛鍚?/label>
+                <input type="text" id="register-username" placeholder="璇疯緭鍏ョ敤鎴峰悕">
+            </div>
+            <div class="form-group">
+                <label>瀵嗙爜</label>
+                <input type="password" id="register-password" placeholder="璇疯緭鍏ュ瘑鐮?>
+            </div>
+            <div class="form-group">
+                <label>瑙掕壊锛堥粯璁よ鑰咃級</label>
+                <select id="register-role">
+                    <option value="reader">璇昏€?/option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button class="btn" onclick="hideModal('register-modal')">鍙栨秷</button>
+                <button class="btn btn-primary" onclick="register()">娉ㄥ唽</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 鍒涘缓鏉垮潡妯℃€佹 -->
+    <div class="modal" id="create-forum-modal">
+        <div class="modal-content">
+            <h2 class="modal-title" id="forum-modal-title">鍒涘缓鏉垮潡</h2>
+            <div class="form-group">
+                <label>鏉垮潡鍚嶇О</label>
+                <input type="text" id="forum-name" placeholder="璇疯緭鍏ユ澘鍧楀悕绉?>
+            </div>
+            <div class="form-group">
+                <label>鏉垮潡鎻忚堪</label>
+                <textarea id="forum-desc" placeholder="璇疯緭鍏ユ澘鍧楁弿杩?></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn" onclick="hideModal('create-forum-modal')">鍙栨秷</button>
+                <button class="btn btn-primary" onclick="saveForum()">淇濆瓨</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 鍒涘缓甯栧瓙妯℃€佹 -->
+    <div class="modal" id="create-post-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">鍙戝竷甯栧瓙</h2>
+            <div class="form-group">
+                <label>甯栧瓙鏍囬</label>
+                <input type="text" id="post-title" placeholder="璇疯緭鍏ュ笘瀛愭爣棰?>
+            </div>
+            <div class="form-group">
+                <label>绫诲瀷</label>
+                <select id="post-type" onchange="toggleVideoUrl()">
+                    <option value="text">鏂囧瓧甯栧瓙</option>
+                    <option value="video">瑙嗛甯栧瓙</option>
+                </select>
+            </div>
+            <div class="form-group" id="video-url-group" style="display:none;">
+                <label>瑙嗛閾炬帴锛圔绔?YouTube锛?/label>
+                <input type="text" id="video-url" placeholder="璇疯緭鍏ヨ棰戝垎浜摼鎺?>
+            </div>
+            <div class="form-group">
+                <label>鍐呭</label>
+                <textarea id="post-content" placeholder="璇疯緭鍏ュ笘瀛愬唴瀹癸紝鏀寔閾炬帴锛歨ttps://example.com"></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn" onclick="hideModal('create-post-modal')">鍙栨秷</button>
+                <button class="btn btn-primary" onclick="createPost()">鍙戝竷</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast娑堟伅 -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // 鏁版嵁瀛樺偍
+        let currentUser = null;
+        let forums = [];
+        let posts = [];
+        let comments = [];
+        let users = [];
+        let editingForumId = null;
+
+        // 鍒濆鍖?        function init() {
+            loadData();
+            if (!users.length) {
+                initDefaultData();
+            }
+            renderHome();
+            updateAuthUI();
+        }
+
+        // 鍔犺浇鏁版嵁
+        function loadData() {
+            const savedData = localStorage.getItem('forumData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                users = data.users || [];
+                forums = data.forums || [];
+                posts = data.posts || [];
+                comments = data.comments || [];
+            }
+        }
+
+        // 淇濆瓨鏁版嵁
+        function saveData() {
+            localStorage.setItem('forumData', JSON.stringify({
+                users, forums, posts, comments
+            }));
+        }
+
+        // 鍒濆鍖栭粯璁ゆ暟鎹?        function initDefaultData() {
+            users = [
+                { id: 1, username: 'admin', password: 'admin123', role: 'admin', createdAt: '2026-01-01' },
+                { id: 2, username: 'host1', password: 'host123', role: 'host', createdAt: '2026-01-15' },
+                { id: 3, username: 'reader1', password: 'reader123', role: 'reader', createdAt: '2026-02-01' },
+                { id: 4, username: 'test', password: 'test123', role: 'reader', createdAt: '2026-02-10' }
+            ];
+
+            forums = [
+                { id: 1, name: '娓告垙鏀荤暐', description: '鍒嗕韩鍚勭被娓告垙鐨勯€氬叧鎶€宸у拰鏀荤暐蹇冨緱', ownerId: 2, postCount: 2 },
+                { id: 2, name: '杞欢鏁欑▼', description: '甯哥敤杞欢鐨勪娇鐢ㄦ妧宸у拰鏁欑▼鍒嗕韩', ownerId: 2, postCount: 1 },
+                { id: 3, name: '纭欢鏁扮爜', description: '鏁扮爜浜у搧璇勬祴鍜屼娇鐢ㄥ績寰?, ownerId: 2, postCount: 1 }
+            ];
+
+            posts = [
+                {
+                    id: 1,
+                    title: '銆婇粦绁炶瘽鎮熺┖銆嬪叏BOSS鎵撴硶鏀荤暐',
+                    content: '鍒嗕韩涓€浜汢OSS鐨勬墦娉曞績寰楋細\n\n1. 骞挎櫤锛氳繖涓狟oss姣旇緝绠€鍗曪紝浣跨敤閲嶅嚮娑堣€楄閲忓嵆鍙€俓n\n2. 鐏佃櫄瀛愶細娉ㄦ剰韬查伩瀹冪殑杩炲嚮锛岃緭鍑虹獥鍙ｅ湪瀹冩敾鍑诲悗鎽囩殑鏃跺€欍€俓n\n鎺ㄨ崘涓€涓緢濂界殑鏀荤暐瑙嗛锛歨ttps://www.bilibili.com/video/BV1xx411c7mD\n\n鏇村鍐呭鍙互璁块棶鎴戜滑鐨勮鍧涳細https://forum.example.com',
+                    type: 'video',
+                    videoUrl: 'https://player.bilibili.com/player.html?bvid=BV1xx411c7mD',
+                    authorId: 2,
+                    forumId: 1,
+                    views: 1234,
+                    likes: 89,
+                    createdAt: '2026-03-10 10:30'
+                },
+                {
+                    id: 2,
+                    title: 'VSCode 鏈€寮烘彃浠舵帹鑽?,
+                    content: '浣滀负寮€鍙戣€咃紝涓€涓ソ鐢ㄧ殑IDE鎻掍欢鑳藉ぇ骞呮彁鍗囨晥鐜囥€備互涓嬫槸鎴戝父鐢ㄧ殑鎻掍欢锛歕n\n1. Prettier - 浠ｇ爜鏍煎紡鍖朶n2. ESLint - 浠ｇ爜妫€鏌n3. GitLens - Git澧炲己\n4. Live Server - 鏈湴鏈嶅姟鍣╘n\n瀹樼綉涓嬭浇锛歨ttps://code.visualstudio.com/\n鎻掍欢甯傚満锛歨ttps://marketplace.visualstudio.com/',
+                    type: 'text',
+                    authorId: 3,
+                    forumId: 2,
+                    views: 567,
+                    likes: 45,
+                    createdAt: '2026-03-12 15:20'
+                },
+                {
+                    id: 3,
+                    title: 'RTX 4090 娣卞害璇勬祴',
+                    content: '鍏ユ墜4090宸茬粡涓€涓湀浜嗭紝鏉ュ垎浜笅浣跨敤浣撻獙锛歕n\n浼樼偣锛歕n- 鎬ц兘寮哄姴锛?K娓告垙鏃犲帇鍔沑n- DLSS 3.0鏁堟灉鏄捐憲\n- 鏁ｇ儹鎺у埗涓嶉敊\n\n缂虹偣锛歕n- 浠锋牸澶吹\n- 鍔熻€楄緝楂榎n\n璐拱閾炬帴锛歨ttps://www.nvidia.com\n璇勬祴瑙嗛锛歨ttps://www.youtube.com/watch?v=example',
+                    type: 'text',
+                    authorId: 2,
+                    forumId: 3,
+                    views: 890,
+                    likes: 67,
+                    createdAt: '2026-03-15 09:00'
+                },
+                {
+                    id: 4,
+                    title: '鑹惧皵鐧绘硶鐜?鏂版墜鍏ラ棬鎸囧崡',
+                    content: '缁欐柊鎵嬬帺瀹剁殑涓€浜涘缓璁細\n\n1. 鍒濇湡鍏堟帰绱㈠畞濮嗘牸绂廫n2. 鎵捐祼绂忕偣浜嗚В鍦板浘\n3. 鍒风骇寤鸿鍘诲湥鏍慭n\n鏂版墜鏀荤暐瑙嗛锛歨ttps://www.bilibili.com/video/BV1t34y1i7Rb',
+                    type: 'video',
+                    videoUrl: 'https://player.bilibili.com/player.html?bvid=BV1t34y1i7Rb',
+                    authorId: 3,
+                    forumId: 1,
+                    views: 2345,
+                    likes: 156,
+                    createdAt: '2026-03-16 14:00'
+                }
+            ];
+
+            comments = [
+                { id: 1, content: '鍐欏緱寰堝ソ锛屽彈鐩婂尓娴咃紒', postId: 1, userId: 3, createdAt: '2026-03-10 12:00' },
+                { id: 2, content: '鎰熻阿鍒嗕韩锛岃棰戝緢璇︾粏', postId: 1, userId: 4, createdAt: '2026-03-10 14:30' },
+                { id: 3, content: '鎻掍欢寰堝ソ鐢紝鎺ㄨ崘锛?, postId: 2, userId: 2, createdAt: '2026-03-12 18:00' },
+                { id: 4, content: '4090纭疄寰堝己锛屼絾浠锋牸鍔濋€€', postId: 3, userId: 3, createdAt: '2026-03-15 10:00' }
+            ];
+
+            saveData();
+        }
+
+        // 椤甸潰瀵艰埅
+        function navigateTo(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+            switch(page) {
+                case 'home':
+                    document.getElementById('page-home').classList.add('active');
+                    document.getElementById('nav-home').classList.add('active');
+                    renderHome();
+                    break;
+                case 'forums':
+                    document.getElementById('page-forums').classList.add('active');
+                    document.getElementById('nav-forums').classList.add('active');
+                    renderForums();
+                    break;
+                case 'postList':
+                    document.getElementById('page-post-list').classList.add('active');
+                    break;
+                case 'postDetail':
+                    document.getElementById('page-post-detail').classList.add('active');
+                    break;
+                case 'userCenter':
+                    document.getElementById('page-user-center').classList.add('active');
+                    renderUserCenter();
+                    break;
+                case 'admin':
+                    document.getElementById('page-admin').classList.add('active');
+                    renderAdmin();
+                    break;
+            }
+        }
+
+        // 娓叉煋棣栭〉
+        function renderHome() {
+            // 娓叉煋鐑棬鏉垮潡
+            const forumsHtml = forums.slice(0, 6).map(forum => `
+                <div class="forum-card" onclick="viewForum(${forum.id})">
+                    <h3>${forum.name}</h3>
+                    <p>${forum.description}</p>
+                    <div class="forum-stats">甯栧瓙: ${forum.postCount || 0}</div>
+                </div>
+            `).join('');
+            document.getElementById('home-forums').innerHTML = forumsHtml || '<p style="color:#999;">鏆傛棤鏉垮潡</p>';
+
+            // 娓叉煋鏈€鏂板笘瀛?            const postsHtml = posts.slice(0, 5).map(post => {
+                const author = users.find(u => u.id === post.authorId);
+                const forum = forums.find(f => f.id === post.forumId);
+                return `
+                    <li class="post-item" onclick="viewPost(${post.id})">
+                        <div class="post-type-icon ${post.type}">${post.type === 'video' ? '鈻? : '馃摑'}</div>
+                        <div class="post-content">
+                            <div class="post-title">
+                                <span class="tag tag-${post.type}">${post.type === 'video' ? '瑙嗛' : '鏂囧瓧'}</span>
+                                ${post.title}
+                            </div>
+                            <div class="post-meta">
+                                ${author?.username || '鏈煡'} 路 ${forum?.name || '鏈煡鏉垮潡'} 路 ${post.createdAt}
+                            </div>
+                        </div>
+                        <div class="post-stats">
+                            <div class="number">${post.views}</div>
+                            <div class="label">闃呰</div>
+                        </div>
+                    </li>
+                `;
+            }).join('');
+            document.getElementById('home-posts').innerHTML = postsHtml || '<li class="empty-state">鏆傛棤甯栧瓙</li>';
+        }
+
+        // 娓叉煋鏉垮潡鍒楄〃
+        function renderForums() {
+            const html = forums.map(forum => {
+                const owner = users.find(u => u.id === forum.ownerId);
+                return `
+                    <div class="forum-card" onclick="viewForum(${forum.id})">
+                        <h3>${forum.name}</h3>
+                        <p>${forum.description}</p>
+                        <div class="forum-stats">
+                            鍚т富: ${owner?.username || '寰呭畾'} 路 甯栧瓙: ${forum.postCount || 0}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('all-forums').innerHTML = html || '<p style="color:#999;">鏆傛棤鏉垮潡</p>';
+
+            // 鏄剧ず鍒涘缓鏉垮潡鎸夐挳锛堢鐞嗗憳鍜屽惂涓诲彲瑙侊級
+            const createBtn = document.getElementById('create-forum-btn');
+            if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'host')) {
+                createBtn.style.display = 'block';
+            } else {
+                createBtn.style.display = 'none';
+            }
+        }
+
+        // 鏌ョ湅鏉垮潡
+        function viewForum(forumId) {
+            const forum = forums.find(f => f.id === forumId);
+            document.getElementById('forum-breadcrumb').textContent = forum?.name || '';
+            document.getElementById('forum-title').textContent = forum?.name || '';
+
+            // 鏄剧ず鍙戝竷鎸夐挳
+            const createBtn = document.getElementById('create-post-btn');
+            if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'host')) {
+                createBtn.style.display = 'block';
+                createBtn.onclick = () => showCreatePostModal(forumId);
+            } else {
+                createBtn.style.display = 'none';
+            }
+
+            // 娓叉煋甯栧瓙
+            const forumPosts = posts.filter(p => p.forumId === forumId);
+            const html = forumPosts.map(post => {
+                const author = users.find(u => u.id === post.authorId);
+                return `
+                    <li class="post-item" onclick="viewPost(${post.id})">
+                        <div class="post-type-icon ${post.type}">${post.type === 'video' ? '鈻? : '馃摑'}</div>
+<div class="post-content">
+                            <div class="post-title">
+                                <span class="tag tag-${post.type}">${post.type === 'video' ? '瑙嗛' : '鏂囧瓧'}</span>
+                                ${post.title}
+                            </div>
+                            <div class="post-meta">
+                                ${author?.username || '鏈煡'} 路 ${post.createdAt}
+                            </div>
+                        </div>
+                        <div class="post-stats">
+                            <div class="number">${post.views}</div>
+                            <div class="label">闃呰</div>
+                        </div>
+                    </li>
+                `;
+            }).join('');
+            document.getElementById('forum-posts').innerHTML = html || '<li class="empty-state">璇ユ澘鍧楁殏鏃犲笘瀛?/li>';
+
+            navigateTo('postList');
+        }
+
+        // 鏌ョ湅甯栧瓙璇︽儏
+        function viewPost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+
+            post.views++;
+            saveData();
+
+            const author = users.find(u => u.id === post.authorId);
+            const forum = forums.find(f => f.id === post.forumId);
+
+            document.getElementById('detail-forum-link').textContent = forum?.name || '';
+            document.getElementById('detail-forum-link').onclick = () => viewForum(post.forumId);
+            document.getElementById('detail-title').textContent = post.title;
+            document.getElementById('detail-author').textContent = author?.username || '鏈煡';
+            document.getElementById('detail-time').textContent = post.createdAt;
+            document.getElementById('detail-views').textContent = post.views;
+
+            // 澶勭悊鍐呭涓殑閾炬帴
+            let content = post.content;
+            if (post.type === 'video' && post.videoUrl) {
+                content += `
+                    <div class="video-container">
+                        <iframe src="${post.videoUrl}" allowfullscreen></iframe>
+                    </div>
+                `;
+            }
+            // 灏嗙函鏂囨湰閾炬帴杞崲涓鸿摑鑹插彲鐐瑰嚮閾炬帴
+            content = content.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank">$1</a>');
+            document.getElementById('detail-content').innerHTML = content.replace(/\n/g, '<br>');
+
+            // 娓叉煋璇勮
+            renderComments(postId);
+
+            // 鏄剧ず璇勮琛ㄥ崟
+            const commentForm = document.getElementById('comment-form');
+            if (currentUser) {
+                commentForm.style.display = 'block';
+            } else {
+                commentForm.style.display = 'none';
+            }
+
+            navigateTo('postDetail');
+        }
+
+        // 娓叉煋璇勮
+        function renderComments(postId) {
+            const postComments = comments.filter(c => c.postId === postId);
+            document.getElementById('comment-count').textContent = postComments.length;
+
+            const html = postComments.map(comment => {
+                const author = users.find(u => u.id === comment.userId);
+                const roleBadge = author ? `<span class="role-badge role-${author.role === 'admin' ? 'admin' : author.role === 'host' ? 'host' : 'reader'}">${getRoleName(author.role)}</span>` : '';
+
+                return `
+                    <li class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">${author?.username || '鏈煡'}</span>
+                            ${roleBadge}
+                            <span class="comment-time">${comment.createdAt}</span>
+                        </div>
+                        <div class="comment-content">${comment.content}</div>
+                        ${(currentUser && (currentUser.role === 'admin' || currentUser.id === comment.userId)) ? `
+                            <div class="comment-actions">
+                                <a href="#" onclick="deleteComment(${comment.id}, ${postId})">鍒犻櫎</a>
+                            </div>
+                        ` : ''}
+                    </li>
+                `;
+            }).join('');
+            document.getElementById('comment-list').innerHTML = html || '<li class="empty-state">鏆傛棤璇勮</li>';
+        }
+
+        // 鑾峰彇瑙掕壊鍚嶇О
+        function getRoleName(role) {
+            const names = { admin: '绠＄悊鍛?, host: '鍚т富', reader: '璇昏€? };
+            return names[role] || '璇昏€?;
+        }
+
+        // 妯℃€佹鎿嶄綔
+        function showModal(id) {
+            document.getElementById(id).classList.add('show');
+        }
+
+        function hideModal(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        // 鐢ㄦ埛璁よ瘉
+        function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                hideModal('login-modal');
+                updateAuthUI();
+                showToast('鐧诲綍鎴愬姛锛?);
+                document.getElementById('login-username').value = '';
+                document.getElementById('login-password').value = '';
+            } else {
+                showToast('鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒', true);
+            }
+        }
+
+        function register() {
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const role = document.getElementById('register-role').value;
+
+            if (!username || !password) {
+                showToast('璇峰～鍐欏畬鏁翠俊鎭?, true);
+                return;
+            }
+
+            if (users.find(u => u.username === username)) {
+                showToast('鐢ㄦ埛鍚嶅凡瀛樺湪', true);
+                return;
+            }
+
+            const newUser = {
+                id: users.length + 1,
+                username,
+                password,
+                role,
+                createdAt: new Date().toLocaleString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(/\//g, '-')
+            };
+            users.push(newUser);
+            saveData();
+
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            hideModal('register-modal');
+            updateAuthUI();
+            showToast('娉ㄥ唽鎴愬姛锛?);
+
+            document.getElementById('register-username').value = '';
+            document.getElementById('register-password').value = '';
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateAuthUI();
+            navigateTo('home');
+            showToast('宸查€€鍑虹櫥褰?);
+        }
+
+        function updateAuthUI() {
+            const userInfo = document.getElementById('user-info');
+            const authButtons = document.getElementById('auth-buttons');
+
+            if (currentUser) {
+                userInfo.style.display = 'flex';
+                authButtons.style.display = 'none';
+                document.getElementById('username-display').textContent = currentUser.username;
+
+                const roleBadge = document.getElementById('role-badge');
+                roleBadge.textContent = getRoleName(currentUser.role);
+                roleBadge.className = 'role-badge role-' + (currentUser.role === 'admin' ? 'admin' : currentUser.role === 'host' ? 'host' : 'reader');
+
+                // 绠＄悊鍛樻樉绀虹鐞嗗悗鍙板叆鍙?                if (currentUser.role === 'admin') {
+                    const adminLink = document.createElement('a');
+                    adminLink.href = '#';
+                    adminLink.onclick = () => navigateTo('admin');
+                    adminLink.textContent = '绠＄悊鍚庡彴';
+                    userInfo.insertBefore(adminLink, document.getElementById('username-display').nextSibling);
+                }
+            } else {
+                userInfo.style.display = 'none';
+                authButtons.style.display = 'flex';
+            }
+        }
+
+        // 鍒涘缓鏉垮潡
+        function showCreateForumModal() {
+            editingForumId = null;
+            document.getElementById('forum-modal-title').textContent = '鍒涘缓鏉垮潡';
+            document.getElementById('forum-name').value = '';
+            document.getElementById('forum-desc').value = '';
+            showModal('create-forum-modal');
+        }
+
+        function saveForum() {
+            const name = document.getElementById('forum-name').value;
+            const desc = document.getElementById('forum-desc').value;
+
+            if (!name) {
+                showToast('璇峰～鍐欐澘鍧楀悕绉?, true);
+                return;
+            }
+
+            if (editingForumId) {
+                const forum = forums.find(f => f.id === editingForumId);
+                if (forum) {
+                    forum.name = name;
+                    forum.description = desc;
+                }
+                showToast('鏉垮潡宸叉洿鏂?);
+            } else {
+                const newForum = {
+                    id: forums.length + 1,
+                    name,
+                    description: desc,
+                    ownerId: currentUser.id,
+                    postCount: 0
+                };
+                forums.push(newForum);
+                showToast('鏉垮潡鍒涘缓鎴愬姛');
+            }
+
+            saveData();
+            hideModal('create-forum-modal');
+            renderForums();
+        }
+
+        // 鍒涘缓甯栧瓙
+        function showCreatePostModal(forumId) {
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-type').value = 'text';
+            document.getElementById('video-url').value = '';
+            document.getElementById('post-content').value = '';
+            toggleVideoUrl();
+            document.getElementById('create-post-modal').dataset.forumId = forumId;
+            showModal('create-post-modal');
+        }
+
+        function toggleVideoUrl() {
+            const type = document.getElementById('post-type').value;
+            document.getElementById('video-url-group').style.display = type === 'video' ? 'block' : 'none';
+        }
+
+        function createPost() {
+            const title = document.getElementById('post-title').value;
+            const type = document.getElementById('post-type').value;
+            const videoUrl = document.getElementById('video-url').value;
+            const content = document.getElementById('post-content').value;
+            const forumId = parseInt(document.getElementById('create-post-modal').dataset.forumId);
+
+            if (!title || !content) {
+                showToast('璇峰～鍐欐爣棰樺拰鍐呭', true);
+                return;
+            }
+
+            if (type === 'video' && !videoUrl) {
+                showToast('瑙嗛甯栧瓙闇€瑕佸～鍐欒棰戦摼鎺?, true);
+                return;
+            }
+
+            // 澶勭悊瑙嗛閾炬帴
+            let embedUrl = '';
+            if (type === 'video' && videoUrl) {
+                embedUrl = convertToEmbedUrl(videoUrl);
+            }
+
+            const newPost = {
+                id: posts.length + 1,
+                title,
+                content,
+                type,
+                videoUrl: embedUrl,
+                authorId: currentUser.id,
+                forumId,
+                views: 0,
+                likes: 0,
+                createdAt: new Date().toLocaleString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(/\//g, '-')
+            };
+            posts.push(newPost);
+
+            // 鏇存柊鏉垮潡甯栧瓙鏁?            const forum = forums.find(f => f.id === forumId);
+            if (forum) {
+                forum.postCount = (forum.postCount || 0) + 1;
+            }
+
+            saveData();
+            hideModal('create-post-modal');
+            showToast('甯栧瓙鍙戝竷鎴愬姛');
+            viewForum(forumId);
+        }
+
+        // 杞崲瑙嗛閾炬帴涓哄祵鍏ユ牸寮?        function convertToEmbedUrl(url) {
+            // B绔?            if (url.includes('bilibili.com')) {
+                const bvMatch = url.match(/BV[\w]+/);
+                if (bvMatch) {
+                    return `https://player.bilibili.com/player.html?bvid=${bvMatch[0]}`;
+                }
+            }
+            // YouTube
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                const videoId = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                if (videoId) {
+                    return `https://www.youtube.com/embed/${videoId[1]}`;
+                }
+            }
+            return url;
+        }
+
+        // 鍙戣〃璇勮
+        function submitComment() {
+            const content = document.getElementById('comment-input').value;
+            if (!content) {
+                showToast('璇疯緭鍏ヨ瘎璁哄唴瀹?, true);
+                return;
+            }
+
+            const postId = parseInt(document.getElementById('page-post-detail').dataset.currentPost) || getCurrentPostId();
+
+            const newComment = {
+                id: comments.length + 1,
+                content,
+                postId: posts[posts.length - 1]?.id || 1,
+                userId: currentUser.id,
+                createdAt: new Date().toLocaleString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(/\//g, '-')
+            };
+
+            // 鎵惧埌褰撳墠鏌ョ湅鐨勫笘瀛怚D
+            const urlParams = new URLSearchParams(window.location.search);
+            // 浠庨〉闈腑鑾峰彇褰撳墠甯栧瓙
+            const titleEl = document.getElementById('detail-title');
+            if (titleEl && titleEl.textContent) {
+                const currentPost = posts.find(p => p.title === titleEl.textContent);
+                if (currentPost) {
+                    newComment.postId = currentPost.id;
+                }
+            }
+
+            comments.push(newComment);
+            saveData();
+
+            document.getElementById('comment-input').value = '';
+            renderComments(newComment.postId);
+            showToast('璇勮鍙戣〃鎴愬姛');
+        }
+
+        function getCurrentPostId() {
+            // 浠庤瘎璁哄尯鍩熺殑鐖剁骇鍏冪礌鑾峰彇
+            return 1;
+        }
+
+        // 鍒犻櫎璇勮
+        function deleteComment(commentId, postId) {
+            if (!confirm('纭畾鍒犻櫎杩欐潯璇勮锛?)) return;
+
+            comments = comments.filter(c => c.id !== commentId);
+            saveData();
+            renderComments(postId);
+            showToast('璇勮宸插垹闄?);
+        }
+
+        // 鐢ㄦ埛涓績
+        function renderUserCenter() {
+            if (!currentUser) {
+                showToast('璇峰厛鐧诲綍', true);
+                return;
+            }
+
+            document.getElementById('uc-nickname').textContent = currentUser.username;
+            const roleBadge = document.getElementById('uc-role');
+            roleBadge.textContent = getRoleName(currentUser.role);
+            roleBadge.className = 'role-badge role-' + (currentUser.role === 'admin' ? 'admin' : currentUser.role === 'host' ? 'host' : 'reader');
+
+            // 鎴戠殑甯栧瓙
+            const myPosts = posts.filter(p => p.authorId === currentUser.id);
+            const postsHtml = myPosts.map(post => {
+                const forum = forums.find(f => f.id === post.forumId);
+                return `
+                    <li class="post-item" onclick="viewPost(${post.id})">
+                        <div class="post-type-icon ${post.type}">${post.type === 'video' ? '鈻? : '馃摑'}</div>
+                        <div class="post-content">
+                            <div class="post-title">
+                                <span class="tag tag-${post.type}">${post.type === 'video' ? '瑙嗛' : '鏂囧瓧'}</span>
+                                ${post.title}
+                            </div>
+                            <div class="post-meta">
+                                ${forum?.name || '鏈煡鏉垮潡'} 路 ${post.createdAt}
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-small btn-danger" onclick="deletePost(${post.id}, event)">鍒犻櫎</button>
+                        </div>
+                    </li>
+                `;
+            }).join('');
+            document.getElementById('my-posts').innerHTML = postsHtml || '<li class="empty-state">鏆傛棤甯栧瓙</li>';
+
+            // 鎴戠殑璇勮
+            const myComments = comments.filter(c => c.userId === currentUser.id);
+            const commentsHtml = myComments.map(comment => {
+                const post = posts.find(p => p.id === comment.postId);
+                return `
+                    <li class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">璇勮浜庡笘瀛愶細</span>
+                            <a href="#" onclick="viewPost(${comment.postId});return false;">${post?.title || '宸插垹闄?}</a>
+                            <span class="comment-time">${comment.createdAt}</span>
+                        </div>
+                        <div class="comment-content">${comment.content}</div>
+                    </li>
+                `;
+            }).join('');
+            document.getElementById('my-comments').innerHTML = commentsHtml || '<li class="empty-state">鏆傛棤璇勮</li>';
+        }
+
+        function showUserTab(tab) {
+            document.querySelectorAll('#page-user-center .user-main > div').forEach(d => d.style.display = 'none');
+            document.querySelectorAll('#page-user-center .user-menu li').forEach(li => li.classList.remove('active'));
+
+            document.getElementById('uc-' + tab).style.display = 'block';
+            event.target.classList.add('active');
+        }
+
+        // 鍒犻櫎甯栧瓙
+        function deletePost(postId, event) {
+            event.stopPropagation();
+            if (!confirm('纭畾鍒犻櫎杩欑瘒甯栧瓙锛?)) return;
+
+            posts = posts.filter(p => p.id !== postId);
+            comments = comments.filter(c => c.postId !== postId);
+
+            // 鏇存柊鏉垮潡甯栧瓙鏁?            forums.forEach(f => {
+                f.postCount = posts.filter(p => p.forumId === f.id).length;
+            });
+
+            saveData();
+            renderUserCenter();
+            showToast('甯栧瓙宸插垹闄?);
+        }
+
+        // 绠＄悊鍚庡彴
+        function renderAdmin() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                showToast('鏃犳潈闄愯闂?, true);
+                navigateTo('home');
+                return;
+            }
+
+            // 鐢ㄦ埛绠＄悊
+            const usersHtml = users.map(user => `
+                <tr>
+                    <td>${user.username}</td>
+                    <td>
+                        <select onchange="changeUserRole(${user.id}, this.value)">
+                            <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>绠＄悊鍛?/option>
+                            <option value="host" ${user.role === 'host' ? 'selected' : ''}>鍚т富</option>
+                            <option value="reader" ${user.role === 'reader' ? 'selected' : ''}>璇昏€?/option>
+                        </select>
+                    </td>
+                    <td>${user.createdAt}</td>
+                    <td>
+                        <button class="btn btn-small btn-danger" onclick="deleteUser(${user.id})">鍒犻櫎</button>
+                    </td>
+                </tr>
+            `).join('');
+            document.getElementById('admin-users-tbody').innerHTML = usersHtml;
+
+            // 鏉垮潡绠＄悊
+            const forumsHtml = forums.map(forum => {
+                const owner = users.find(u => u.id === forum.ownerId);
+                return `
+                    <tr>
+                        <td>${forum.name}</td>
+                        <td>${forum.description || '-'}</td>
+                        <td>${owner?.username || '寰呭畾'}</td>
+                        <td>${forum.postCount || 0}</td>
+                        <td>
+                            <button class="btn btn-small" onclick="editForum(${forum.id})">缂栬緫</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteForum(${forum.id})">鍒犻櫎</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            document.getElementById('admin-forums-tbody').innerHTML = forumsHtml;
+
+            // 甯栧瓙绠＄悊
+            const postsHtml = posts.map(post => {
+                const author = users.find(u => u.id === post.authorId);
+                return `
+                    <li class="post-item">
+                        <div class="post-type-icon ${post.type}">${post.type === 'video' ? '鈻? : '馃摑'}</div>
+                        <div class="post-content">
+                            <div class="post-title">${post.title}</div>
+                            <div class="post-meta">
+                                浣滆€? ${author?.username || '鏈煡'} 路 闃呰: ${post.views}
+                            </div>
+                        </div>
+                        <button class="btn btn-small btn-danger" onclick="deletePostByAdmin(${post.id})">鍒犻櫎</button>
+                    </li>
+                `;
+            }).join('');
+            document.getElementById('admin-posts-list').innerHTML = postsHtml || '<li class="empty-state">鏆傛棤甯栧瓙</li>';
+        }
+
+        function showAdminTab(tab) {
+            document.querySelectorAll('.admin-content > div').forEach(d => d.style.display = 'none');
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+
+            document.getElementById('admin-' + tab).style.display = 'block';
+            event.target.classList.add('active');
+        }
+
+        function changeUserRole(userId, newRole) {
+            const user = users.find(u => u.id === userId);
+            if (user) {
+                user.role = newRole;
+                saveData();
+                showToast('瑙掕壊宸叉洿鏂?);
+            }
+        }
+
+        function deleteUser(userId) {
+            if (!confirm('纭畾鍒犻櫎璇ョ敤鎴凤紵')) return;
+
+            users = users.filter(u => u.id !== userId);
+            posts = posts.filter(p => p.authorId !== userId);
+            comments = comments.filter(c => c.userId !== userId);
+            saveData();
+            renderAdmin();
+            showToast('鐢ㄦ埛宸插垹闄?);
+        }
+
+        function editForum(forumId) {
+            const forum = forums.find(f => f.id === forumId);
+            if (forum) {
+                editingForumId = forumId;
+                document.getElementById('forum-modal-title').textContent = '缂栬緫鏉垮潡';
+                document.getElementById('forum-name').value = forum.name;
+                document.getElementById('forum-desc').value = forum.description;
+                showModal('create-forum-modal');
+            }
+        }
+
+        function deleteForum(forumId) {
+            if (!confirm('纭畾鍒犻櫎璇ユ澘鍧楋紵甯栧瓙涔熶細琚垹闄ゃ€?)) return;
+
+            forums = forums.filter(f => f.id !== forumId);
+            posts = posts.filter(p => p.forumId !== forumId);
+            saveData();
+            renderAdmin();
+            showToast('鏉垮潡宸插垹闄?);
+        }
+
+        function deletePostByAdmin(postId) {
+            if (!confirm('纭畾鍒犻櫎杩欑瘒甯栧瓙锛?)) return;
+
+            posts = posts.filter(p => p.id !== postId);
+            comments = comments.filter(c => c.postId !== postId);
+
+            forums.forEach(f => {
+                f.postCount = posts.filter(p => p.forumId === f.id).length;
+            });
+
+            saveData();
+            renderAdmin();
+            showToast('甯栧瓙宸插垹闄?);
+        }
+
+        // Toast娑堟伅
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (isError ? ' error' : '');
+
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        }
+
+        // 鍒濆鍖栭〉闈㈡暟鎹睘鎬?        document.getElementById('create-forum-modal').addEventListener('click', function(e) {
+            if (e.target === this) hideModal('create-forum-modal');
+        });
+
+        document.getElementById('login-modal').addEventListener('click', function(e) {
+            if (e.target === this) hideModal('login-modal');
+        });
+
+        document.getElementById('register-modal').addEventListener('click', function(e) {
+            if (e.target === this) hideModal('register-modal');
+        });
+
+        document.getElementById('create-post-modal').addEventListener('click', function(e) {
+            if (e.target === this) hideModal('create-post-modal');
+        });
+
+        // 椤甸潰鍔犺浇鏃舵鏌ョ櫥褰曠姸鎬?        window.onload = function() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+            }
+            init();
+        };
+    </script>
+</body>
+</html>
