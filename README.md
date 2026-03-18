@@ -1,26 +1,25 @@
-# 鏀荤暐鍒嗕韩璁哄潧
+# Forum
 
-涓€涓畝娲佺殑鏀荤暐鍒嗕韩璁哄潧锛屾敮鎸佹枃瀛楀拰瑙嗛鍐呭锛屽寘鍚鐞嗗憳銆佸惂涓汇€佽鑰呬笁绉嶇敤鎴疯鑹层€?
-## 鍔熻兘鐗规€?
-### 鐢ㄦ埛瑙掕壊
-- **绠＄悊鍛?*: 鍏ㄧ珯绠＄悊銆佺敤鎴风鐞嗐€佹澘鍧楃鐞?- **鍚т富**: 绠＄悊鎵€灞炴澘鍧椼€佸彂甯冨笘瀛?- **璇昏€?*: 娴忚甯栧瓙銆佸彂琛ㄨ瘎璁?
-### 鍐呭鏀寔
-- 鏂囧瓧甯栧瓙锛堟敮鎸佸閾撅紝鑷姩钃濊壊鏄剧ず锛?- 瑙嗛甯栧瓙锛圔绔?YouTube宓屽叆鎾斁锛?
-### UI椋庢牸
-- 绠€鏈磋璁★紝鏃犺姳鍝ㄥ姩鐢?- 鎵€鏈夐摼鎺ョ粺涓€鏄剧ず涓鸿摑鑹?`#0066cc`
+A simple forum for sharing guides and strategies, supporting text and video content with three user roles: admin, host, and reader.
 
-## 婕旂ず璐﹀彿
+## Features
 
-| 璐﹀彿 | 瀵嗙爜 | 瑙掕壊 |
-|------|------|------|
-| admin | admin123 | 绠＄悊鍛?|
-| host1 | host123 | 鍚т富 |
-| reader1 | reader123 | 璇昏€?|
+- **User Roles**: Admin, Host, Reader
+- **Content Types**: Text posts, Video posts (Bilibili/YouTube embedded)
+- **Simple UI**: Clean design, blue links (#0066cc)
 
-## 浣跨敤鏂规硶
+## Demo Accounts
 
-鐩存帴鍦ㄦ祻瑙堝櫒涓墦寮€ `index.html` 鏂囦欢鍗冲彲浣跨敤銆?
-鏁版嵁瀛樺偍鍦ㄦ祻瑙堝櫒 localStorage 涓€?
-## 鍦ㄧ嚎棰勮
+| Username | Password | Role |
+|----------|----------|------|
+| admin | admin123 | Admin |
+| host1 | host123 | Host |
+| reader1 | reader123 | Reader |
 
-鍙洿鎺ラ儴缃插埌 GitHub Pages 鎴栦换鎰忛潤鎬佹墭绠℃湇鍔°€?
+## Usage
+
+Open `index.html` directly in a browser. Data is stored in localStorage.
+
+## Online Demo
+
+Deployed at: https://rln0q3j8t15e.space.minimaxi.com
